@@ -3,15 +3,27 @@ class ShoppingList
 {
     private List<Item> items = new List<Item>();
     private string path;
+    public int BudgetCap { get; private set; } = 1000;
 
     public ShoppingList(string path)
     {
         this.path = path;
     }
 
-    public void Add(Item item)
+    // Changing it to a bool instead to check if you have enough money 
+    // to add the item to your grocery list 
+    public bool Add(Item item)
     {
+        // Check if the new total cost is still within the budget
+        if((Total() + item.Price) > BudgetCap)
+        {
+            // If not within budget
+            return false;
+        }
+
+        // If within budget
         items.Add(item);
+        return true;
     }
 
     // Removes the item the user sees as number 1, 2, 3 ...
@@ -96,7 +108,7 @@ class ShoppingList
         }
         catch (Exception ex)
         {
-            // Other errors that have not been forseen
+            // Other errors that have not been foreseen
             Console.WriteLine($"Ett oväntat fel uppstod: {ex.Message}");
             return;
         }
