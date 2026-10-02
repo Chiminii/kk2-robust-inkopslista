@@ -19,7 +19,7 @@ class ShoppingList
     {
         int index = number - 1;
         // Check if user input is within the range of the list
-        if(index >= 0 && index < items.Count)
+        if (index >= 0 && index < items.Count)
         {
             items.RemoveAt(index);
         }
@@ -78,11 +78,26 @@ class ShoppingList
 
         try
         {
+            // Trying to write to the file
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
         }
-        catch
+        catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Ett fel uppstod. Kunde inte spara listan.");
+            // If you're not authorized to open the file
+            Console.WriteLine($"Kunde inte spara listan. Programmet saknar behörighet till filen '{path}'.");
+            return;
+        }
+        catch (IOException)
+        {
+            // If the file is blocked, for example it is already opened in another program
+            // or the hard drive is full
+            Console.WriteLine($"Kunde inte spara listan. Filen är låst av ett annat program eller hårddisken är full.");
+            return;
+        }
+        catch (Exception ex)
+        {
+            // Other errors that have not been forseen
+            Console.WriteLine($"Ett oväntat fel uppstod: {ex.Message}");
             return;
         }
 
@@ -92,16 +107,40 @@ class ShoppingList
     // Reads the file back into the list.
     public void Load()
     {
-        // Check if file exists
-        if (!File.Exists(path))
+        string text = "";
+
+        try
         {
-            Console.WriteLine($"Kan inte hitta filen {path}");
+            // Trying to read the file
+            text = File.ReadAllText(path);
+        }
+        catch (FileNotFoundException)
+        {
+            // If the file-name doesn't exist
+            Console.WriteLine($"Kan inte hitta filen '{path}'.");
+            return;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // If you're not authorized to open the file
+            Console.WriteLine($"Kan inte öppna filen '{path}'. Programmet saknar behörighet.");
+            return;
+        }
+        catch (IOException)
+        {
+            // If the file is blocked, for example it is already opened in another program
+            Console.WriteLine($"Kan inte öppna filen '{path}'. Filen är låst av ett annat program.");
+            return;
+        }
+        catch (Exception ex)
+        {
+            // Other errors that have not been foreseen
+            Console.WriteLine($"Ett oväntat fel uppstod: {ex.Message}");
             return;
         }
 
-        string text = File.ReadAllText(path);
         //string[] lines = text.Split('\n');
-        string [] lines = text.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries);
+        string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
         {
@@ -109,13 +148,13 @@ class ShoppingList
 
             // Check if you can split it up into two parts before adding the item
             // And check that it has the right user input on the price so it doesn't crash
-            if(parts.Length == 2 && int.TryParse(parts[0], out int price))
+            if (parts.Length == 2 && int.TryParse(parts[0], out int price))
             {
                 items.Add(new Item(parts[1], price));
             }
             else
             {
-                Console.WriteLine( $"Kan inte läsa raden: '{line}'. Felaktigt format.");
+                Console.WriteLine($"Kan inte läsa raden: '{line}'. Felaktigt format.");
             }
         }
     }
