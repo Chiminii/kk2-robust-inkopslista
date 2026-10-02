@@ -13,21 +13,41 @@ while (true)
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
 
-    int choice = int.Parse(Console.ReadLine());
+    string choiceInput = Console.ReadLine();
+    if (!int.TryParse(choiceInput, out int choice))
+    {
+        Console.WriteLine("Felaktig inmatning. Ange ett heltal mellan 1-5.");
+        continue;
+    }
 
     if (choice == 1)
     {
         Console.Write("Namn: ");
         string name = Console.ReadLine();
+
         Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine());
-        list.Add(new Item(name, price));
+        string priceInput = Console.ReadLine();
+        if(int.TryParse(priceInput, out int price))
+        {
+            list.Add(new Item(name, price));
+        }
+        else
+        {
+            Console.WriteLine("Fel inmatning. Priset måste vara ett heltal. Varan lades inte till.");
+        }
     }
     else if (choice == 2)
     {
         Console.Write("Nummer: ");
-        int number = int.Parse(Console.ReadLine());
-        list.RemoveAt(number);
+        string numberInput = Console.ReadLine();
+        if(int.TryParse(numberInput, out int number))
+        {
+            list.RemoveAt(number);            
+        }
+        else
+        {
+            Console.WriteLine("Fel: Det radnumret existerar inte.");
+        }
     }
     else if (choice == 3)
     {
@@ -51,5 +71,9 @@ while (true)
     else if (choice == 5)
     {
         break;
+    }
+    else
+    {
+        Console.WriteLine("\nOgiltigt nummer. Välj mellan 1-5.");
     }
 }

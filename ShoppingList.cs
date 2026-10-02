@@ -17,7 +17,16 @@ class ShoppingList
     // Removes the item the user sees as number 1, 2, 3 ...
     public void RemoveAt(int number)
     {
-        items.RemoveAt(number - 1);
+        int index = number - 1;
+        // Check if user input is within the range of the list
+        if(index >= 0 && index < items.Count)
+        {
+            items.RemoveAt(index);
+        }
+        else
+        {
+            Console.WriteLine("Felaktigt nummer. Kan inte hitta varan.");
+        }
     }
 
     // Adds up the price of every item on the list.
@@ -25,7 +34,7 @@ class ShoppingList
     {
         int sum = 0;
 
-        for (int i = 1; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             sum += items[i].Price;
         }
@@ -73,6 +82,8 @@ class ShoppingList
         }
         catch
         {
+            Console.WriteLine("Ett fel uppstod. Kunde inte spara listan.");
+            return;
         }
 
         Console.WriteLine("Listan är sparad.");
@@ -81,13 +92,31 @@ class ShoppingList
     // Reads the file back into the list.
     public void Load()
     {
+        // Check if file exists
+        if (!File.Exists(path))
+        {
+            Console.WriteLine($"Kan inte hitta filen {path}");
+            return;
+        }
+
         string text = File.ReadAllText(path);
-        string[] lines = text.Split('\n');
+        //string[] lines = text.Split('\n');
+        string [] lines = text.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
         {
             string[] parts = line.Split(';');
-            items.Add(new Item(parts[1], int.Parse(parts[0])));
+
+            // Check if you can split it up into two parts before adding the item
+            // And check that it has the right user input on the price so it doesn't crash
+            if(parts.Length == 2 && int.TryParse(parts[0], out int price))
+            {
+                items.Add(new Item(parts[1], price));
+            }
+            else
+            {
+                Console.WriteLine( $"Kan inte läsa raden: '{line}'. Felaktigt format.");
+            }
         }
     }
 }
