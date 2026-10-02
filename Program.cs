@@ -46,7 +46,7 @@ while (true)
         }
         else
         {
-            Console.WriteLine("Fel: Det radnumret existerar inte.");
+            Console.WriteLine("Fel: Inmatningen måste vara en siffra.");
         }
     }
     else if (choice == 3)

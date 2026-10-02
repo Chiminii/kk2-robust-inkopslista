@@ -25,7 +25,7 @@ class ShoppingList
         }
         else
         {
-            Console.WriteLine("Felaktigt nummer. Kan inte hitta varan.");
+            Console.WriteLine("Fel: Det radnumret existerar inte.");
         }
     }
 
@@ -139,7 +139,6 @@ class ShoppingList
             return;
         }
 
-        //string[] lines = text.Split('\n');
         string[] lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
