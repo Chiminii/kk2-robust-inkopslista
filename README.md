@@ -20,3 +20,12 @@
     och avbryta metoden med
     **return;** så att 
     **Console.WriteLine("Listan är sparad.");** inte skrivs ut.
+
+
+
+- ### Designval av budgettaket
+    - Jag valde att Add-metoden skulle returnera en bool, dvs true or false istället för att kasta ett undantag. Anledningen är att det i det här fallet inte är något allvarligt fel som den behöver hantera, utan bara om du har råd med något. Det blir "tyngre" för datorns system om den behöver kasta ett undantag för varje gång du inte har råd.
+
+        Men i Item-klassen är det viktigare att den kastar undantag när ett fel uppstår så att den inte skapar trasiga objekt och lägger till det i listan. 
+
+        Jag valde att i Main kontrollera att man skapat ett item på ett korrekt sätt med ett try-catch-block. Om man skapat objektet fel fångas felet upp i catch, om man skapat den rätt går man vidare till en if-sats som först kontrollerar med en bool om det är inom budget innan du kan lägga till den i listan. 
