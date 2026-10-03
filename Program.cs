@@ -27,9 +27,31 @@ while (true)
 
         Console.Write("Pris: ");
         string priceInput = Console.ReadLine();
-        if(int.TryParse(priceInput, out int price))
+        if (int.TryParse(priceInput, out int price))
         {
-            list.Add(new Item(name, price));
+            try
+            {
+                // Try to create new item
+                // If the input is invalid an exception is thrown and caught below 
+                Item newItem = new Item(name, price);
+
+                // Check if the item is within the budget before adding to the list
+                if (list.Add(newItem))
+                {
+                    Console.WriteLine($"{name} har lagts till i listan.");
+                }
+                else
+                {
+                    Console.WriteLine($"Kan inte lägga till varan. Totalbeloppet skulle överstiga budgettaket på {list.BudgetCap} kr.");
+                }
+            }
+            // If the item was added incorrectly
+            // Only need ArgumentException and not ArgumentOutOfRangeException
+            // since ArgumentOutOfRangeException inherits from the parent ArgumentException
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Fel: {ex.Message} ");
+            }
         }
         else
         {
@@ -40,9 +62,9 @@ while (true)
     {
         Console.Write("Nummer: ");
         string numberInput = Console.ReadLine();
-        if(int.TryParse(numberInput, out int number))
+        if (int.TryParse(numberInput, out int number))
         {
-            list.RemoveAt(number);            
+            list.RemoveAt(number);
         }
         else
         {
