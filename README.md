@@ -29,3 +29,39 @@
         Men i Item-klassen är det viktigare att den kastar undantag när ett fel uppstår så att den inte skapar trasiga objekt och lägger till det i listan. 
 
         Jag valde att i Main kontrollera att man skapat ett item på ett korrekt sätt med ett try-catch-block. Om man skapat objektet fel fångas felet upp i catch, om man skapat den rätt går man vidare till en if-sats som först kontrollerar med en bool om det är inom budget innan du kan lägga till den i listan. 
+
+
+- ### Klassdiagram 
+
+```mermaid
+classDiagram
+    class Program{
+        +Main(string[] args)
+    }
+
+    class ShoppingList{
+        -List~Item~ items
+        -string path
+        +int BudgetCap
+        +ShoppingList(string path)
+        +bool Add(Item item)
+        +void RemoveAt(int number)
+        +int Total()
+        +Item Find(string name)
+        +void Print()
+        +void Save()
+        +void Load()
+    }
+
+    class Item{
+        +string Name
+        +int Price
+        +Item(string name, int price)
+        +ToString() string
+    }
+
+    Program --> ShoppingList : Använder
+    ShoppingList "1" --> "*" Item : Innehåller
+```     
+
+    
