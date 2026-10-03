@@ -1,4 +1,5 @@
 15;Mjölk
 32;Bröd
-89;Ost 
+89;Ost
 10;orange
+15;apple

@@ -1,6 +1,7 @@
 ShoppingList list = new ShoppingList("items.txt");
 list.Load();
 
+
 while (true)
 {
     Console.WriteLine();
@@ -45,7 +46,7 @@ while (true)
                     Console.WriteLine($"Kan inte lägga till varan. Totalbeloppet skulle överstiga budgettaket på {list.BudgetCap} kr.");
                 }
             }
-            // If the item was added incorrectly
+            // If the item was created incorrectly
             // Only need ArgumentException and not ArgumentOutOfRangeException
             // since ArgumentOutOfRangeException inherits from the parent ArgumentException
             catch (ArgumentException ex)

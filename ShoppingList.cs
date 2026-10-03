@@ -15,12 +15,14 @@ class ShoppingList
     public bool Add(Item item)
     {
         // Check if the new total cost is still within the budget
-        if((Total() + item.Price) > BudgetCap)
+        if ((Total() + item.Price) > BudgetCap)
         {
             // If not within budget
             return false;
         }
 
+        // Remove any whitespace before and after the start of the item name
+        item.Name = item.Name.Trim();
         // If within budget
         items.Add(item);
         return true;
@@ -59,7 +61,10 @@ class ShoppingList
     {
         foreach (Item item in items)
         {
-            if (item.Name == name)
+            // Convert all letters to lowercase
+            // so that it doesn't matter if the user accidently wrote in 
+            // upper or lowercase for the same item name 
+            if (item.Name.ToLower() == name.ToLower())
             {
                 return item;
             }

@@ -20,6 +20,7 @@
     och avbryta metoden med
     **return;** så att 
     **Console.WriteLine("Listan är sparad.");** inte skrivs ut.
+    (Catch ska också fånga ett undantag i sin parameter).
 
 
 
