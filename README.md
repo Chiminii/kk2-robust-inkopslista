@@ -1,9 +1,9 @@
 - ### Fyra buggar som får programmet att krascha
-    - I Main() kommer programmet krascha när man på **int.Parse(Console.ReadLine())** inte matar in en siffra, dvs den kraschar vid bokstäver och tomma inmatningar. Man får errorn *FormatException*. För att lösa detta bör man använda **int.TryParse** istället som säkerställer att man gjort rätt inmatning.
+    - I Main() kommer programmet krascha när man på **int.Parse(Console.ReadLine())** inte matar in en siffra, dvs den kraschar vid bokstäver och tomma inmatningar. Man får errorn **FormatException**. För att lösa detta bör man använda **int.TryParse** istället som säkerställer att man gjort rätt inmatning.
 
-    - I metoden RemoveAt(int number) i ShoppingList-klassen finns det inget som kontrollerar hur många varor som faktiskt finns i listan. Om användaren matar in ett negativt tal eller ett tal som är högre än antalet varor kommer man får errorn *ArgumentOutOfRangeException*. (I koden har det gjorts om till index = number - 1 , eftersom listor börjar på indexet noll) För att lösa detta behöver man ta reda på om siffran som användaren matar in existerar i listan med en if-sats.
+    - I metoden RemoveAt(int number) i ShoppingList-klassen finns det inget som kontrollerar hur många varor som faktiskt finns i listan. Om användaren matar in ett negativt tal eller ett tal som är högre än antalet varor kommer man får errorn **ArgumentOutOfRangeException**. (I koden har det gjorts om till index = number - 1 , eftersom listor börjar på indexet noll) För att lösa detta behöver man ta reda på om siffran som användaren matar in existerar i listan med en if-sats med villkoret *index >= 0 && index < items.Count*
 
-    - I metoden Load() i ShoppingList-klassen finns det inget som kontrollerar att en textfil som man försöker läsa från faktiskt existerar. Försöker man läsa från en fil som inte finns får man errorn **FileNotFoundException** och programmet kraschar. För att förhindra detta kan man lägga till ett try-catch-block som kan fånga upp fel om det   uppstår utan att programmet kraschar.
+    - I metoden Load() i ShoppingList-klassen finns det inget som kontrollerar att en textfil som man försöker läsa från faktiskt existerar. Försöker man läsa från en fil som inte finns får man errorn **FileNotFoundException** och programmet kraschar. För att förhindra detta kan man lägga till ett try-catch-block som kan fånga upp fel om det uppstår utan att programmet kraschar.
 
     - I metoden Save() i ShoppingList-klassen läggs en extra radbrytning till på slutet av filen **+ "\r\n"**. När metoden Load() läser in filen och gör **text.Split('\n');** kommer den sista raden i arrayen bli tom. När programmet sedan försöker köra **items.Add(new Item(parts[1], int.Parse(parts[0])));** på den sista raden i arrayen kommer programmet att krascha eftersom **line.Split(';')** inte kommer hitta något semikolon vilket resulterar i att arrayen blir för kort, dvs det finns inget att lägga till parts[1] ,  (**IndexOutOfRangeException**) och int.Parse kan inte ta emot en tom sträng. För att lösa detta kan man tex i Load() skriva:
     **string [] lines = text.Split(new[] {"\r\n", "\n"}, StringSplitOptions.RemoveEmptyEntries);**
@@ -20,7 +20,7 @@
     och avbryta metoden med
     **return;** så att 
     **Console.WriteLine("Listan är sparad.");** inte skrivs ut.
-    (Catch ska också fånga ett undantag i sin parameter).
+    (Catch ska också fånga ett undantag i sin parameter, tex en av dem kan vara *catch (IOException)*).
 
 
 
